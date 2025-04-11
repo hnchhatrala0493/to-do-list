@@ -1,5 +1,6 @@
 import React, { useEffect, useRef, useState } from 'react';
 import TodoItem from './TodoItems';
+import axios from 'axios';
 
 const Todo = () => {
     const inputRef = useRef();
@@ -18,7 +19,13 @@ const Todo = () => {
         setTodoList((prev)=>[...prev,newTodo]);
         inputRef.current.value = "";
     }
-
+    const [task, setTask] = useState('');
+    
+    const handleAdd = () => {
+        axios.post('http://localhost:3001/add', { task: task })
+        .then(() => location.reload())  // Removed result
+        .catch(err => console.log(err));
+    }
     const DeleteTodo = (id) =>{
        setTodoList((prvTodos)=>{
             return prvTodos.filter((todo)=>todo.id !== id)
@@ -47,9 +54,9 @@ const Todo = () => {
         })
     }
 
-  useEffect(()=>{
-    localStorage.setItem("todos",JSON.stringify(todoList));
-  },[todoList]); 
+//   useEffect(()=>{
+//     localStorage.setItem("todos",JSON.stringify(todoList));
+//   },[todoList]); 
 
   return (
     <div className='bg-white place-self-center w-11/12 max-w-md flex flex-col p-7 min-h-[550px] rounded-xl'>
