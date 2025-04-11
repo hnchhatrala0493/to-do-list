@@ -2,14 +2,13 @@ const express = require("express");
 const mongoose = require("mongoose");
 const cors = require("cors");
 const TodoModel = require("./Models/Todo");
+const { default: connectDB } = require("./config/dbConnection");
 
 const app = express();
 app.use(cors());
 app.use(express.json());
 
-mongoose.connect(
-  "mongodb+srv://himanshupatel0493:MOJn6FcaawWJ6PdS@himanshucluster.rdxdf.mongodb.net/TodoList"
-);
+await connectDB();
 
 app.get("/get", (req, res) => {
   TodoModel.find()
